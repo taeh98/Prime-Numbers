@@ -8,7 +8,6 @@ import java.util.Scanner;
  * Some mathematical methods inspired by Numberphile from https://www.youtube.com/watch?v=lEvXcTYqtKU
  */
 public class PrimeNumbers {
-
     private static final BigInteger ZERO = new BigInteger("0");
     private static final BigInteger ONE = new BigInteger("1");
     private static final BigInteger TWO = new BigInteger("2");
@@ -16,6 +15,10 @@ public class PrimeNumbers {
     private static final BigInteger FOUR = new BigInteger("4");
     private static final BigInteger FIVE = new BigInteger("5");
 
+    /**
+     * The main method selects whether to find all prime numbers, or the next one after a specified start point.
+     * @param String[] args : empty
+     */
     public static void main(String[] args) {
         String input = getString("Please input whether you would like the program to print all (\"A\") the prime numbers, or the next (\"N\") after a given number.");
         while (!(input.equals("A") || input.equals("N"))) {
@@ -25,6 +28,11 @@ public class PrimeNumbers {
         else findNext();
     }
 
+    /**
+     * methof to increment the value of a BigInteger in a for loop finding prime numbers.
+     * @param  BigInteger termNoIn      [the current value of the term number in]
+     * @return            [the next term number]
+     */
     private static BigInteger incrementForLoop(BigInteger termNoIn) {
         if (!termNoIn.equals(TWO)) {
             return termNoIn.add(TWO);
@@ -33,6 +41,9 @@ public class PrimeNumbers {
         }
     }
 
+    /**
+     * method to print every prime number. Called from the main method.
+     */
     private static void printAll() {
         BigInteger termNo = ONE;
         for (BigInteger i = TWO; true; i = incrementForLoop(i)) {
@@ -43,6 +54,9 @@ public class PrimeNumbers {
         }
     }
 
+    /**
+     * method to find the next prime number after a given start point (number).
+     */
     private static void findNext() {
         BigInteger startPoint = getBigInteger("Please give the BigInteger value to start from.");
         if (startPoint.equals(TWO)) {
@@ -60,6 +74,11 @@ public class PrimeNumbers {
         }
     }
 
+    /**
+     * method to find the value of the term number in the lucas sequence.
+     * @param  BigInteger termNumIn     [the term number given]
+     * @return            [the value at that term number in the lucas sequence]
+     */
     private static BigInteger findLucasNumber(BigInteger termNumIn) {
         /*
             Bring in number as term number in Lucas Sequence; find the value at that term.
@@ -70,6 +89,11 @@ public class PrimeNumbers {
         //todo: convert this from recursion to a general formula function
     }
 
+    /**
+     * method to run a number agains the Lucas Test, which tells you if a number is likely to be a prime number or definitely not.
+     * @param  BigInteger numIn         [the number against the Lucas Test]
+     * @return            [the boolean of if a number is likely to be a prime number, false if definitely not a prime number]
+     */
     private static boolean lucasTest(BigInteger numIn) {
         /*
             Bring in a number to be tested against the Lucas Sequence to see if it is not, or is probably prime.
@@ -82,6 +106,11 @@ public class PrimeNumbers {
         return (isFactor(numIn, lucasNum));
     }
 
+    /**
+     * method to run a number agains the Lucas-Lehmer primality test.
+     * @param  BigInteger numIn         [the number to be run against the test]
+     * @return            [the boolean result of the test: if numIn is a prime]
+     */
     private static boolean LucasLehmertest (BigInteger numIn) {
         /*
             if numIn = x = 2 ^ y - 1
@@ -101,6 +130,11 @@ public class PrimeNumbers {
         return ((numIn.remainder(w)).equals(ZERO)); // if numIn % w == 0 return true, fallback return false
     }
 
+    /**
+     * method to get the number at a given term number in the Lucas-Lehmer sequence.
+     * @param  BigInteger termNo        [the term number in the Lucas-Lehmer sequence to find the value of]
+     * @return            [the value at the term number in the Lucas-Lehmer sequence]
+     */
     private static BigInteger getLucasLehmerNumber(BigInteger termNo) {
         // x(n+1) = (x(n)) ^ 2 - 2
         if (termNo.equals(ZERO)) return FOUR;
@@ -109,6 +143,11 @@ public class PrimeNumbers {
         return lastTermSquared.subtract(TWO);
     }
 
+    /**
+     * method to find whether a given number is prime or not, by iterating over all odd numbers underneath it.
+     * @param  BigInteger numIn         [the number to be checked for primality]
+     * @return            [boolean of if numIn is prime]
+     */
     private static boolean isPrime(BigInteger numIn) {
         if (numIn.equals(TWO) || numIn.equals(FIVE)) return true;
         if (isEven(numIn)) return false;
@@ -119,11 +158,11 @@ public class PrimeNumbers {
         return true;
     }
 
-    private static boolean isLessThanOrEqualTo(BigInteger firstNo, BigInteger secondNo) {
-        String resultString = String.valueOf(firstNo.compareTo(secondNo));
-        return (resultString.equals("-1") || resultString.equals("0"));
-    }
-
+    /**
+     * method to add the ordinal indicator to a given number, in the inputString given.
+     * @param  String inputString   [the number to have the ordinal indicator added to it]
+     * @return        [the number with the ordinal indicator added to it]
+     */
     private static String getOrdinal(String inputString) {
         String penDigit = "";
         if (inputString.length() > 1) penDigit = String.valueOf(inputString.charAt(inputString.length() - 2)); // penultimate - second to last
@@ -142,6 +181,11 @@ public class PrimeNumbers {
         return inputString + "th"; // effectively an else: default
     }
 
+    /**
+     * method to read in a String from the command line.
+     * @param  String instructions  [a description of what the user should input]
+     * @return        [the String that the user inputted]
+     */
     private static String getString(String instructions) {
         System.out.println(instructions);
         Scanner reader = new Scanner(System.in);
@@ -155,6 +199,11 @@ public class PrimeNumbers {
         }
     }
 
+    /**
+     * method to get a BigInteger from the command line.
+     * @param  String instructions  [the instructions printed to the user before they give their input]
+     * @return        [the BigInteger value of the user's input]
+     */
     private static BigInteger getBigInteger(String instructions) {
         System.out.println(instructions);
         Scanner reader = new Scanner(System.in);
@@ -170,20 +219,55 @@ public class PrimeNumbers {
         return toReturn;
     }
 
+    /**
+     * method to find whether a given number is bigger than another.
+     * @param  BigInteger firstNo       [the first BigInteger value given]
+     * @param  BigInteger secondNo      [the second BigInteger value given]
+     * @return            [return whether or not firstNo is less than or equal to secondNo]
+     */
+    private static boolean isLessThanOrEqualTo(BigInteger firstNo, BigInteger secondNo) {
+        //String resultString = String.valueOf(firstNo.compareTo(secondNo));
+        //return (resultString.equals("-1") || resultString.equals("0"));
+
+        // -1 : firstNo < secondNo, 0 : firstNo = secondNo, +1 : firstNo > secondNo
+
+        return !(firstNo.compareTo(secondNo) > 0);
+    }
+
+    /**
+     * method to find whether a given number is less than another.
+     * @param  BigInteger firstNo       [the first BigInteger value given]
+     * @param  BigInteger secondNo      [the second BigInteger value given]
+     * @return            [return whether or not firstNo is less than secondNo]
+     */
     private static boolean isLessThan(BigInteger firstNo, BigInteger secondNo) {
-        int result = firstNo.compareTo(secondNo);
-        return (String.valueOf(result).equals("-1"));
+        return firstNo.compareTo(secondNo) < 0;
     }
 
+    /**
+     * method to find and return if a given BigInteger number is even.
+     * @param  BigInteger numIn         [the number given]
+     * @return            [the boolean value of whether numIn is even]
+     */
     private static boolean isEven (BigInteger numIn) {
-        return numIn.mod(new BigInteger("2")).equals(BigInteger.ZERO);
+        return numIn.mod(TWO).equals(ZERO);
     }
 
+    /**
+     * method to find whether a number is a factor of another
+     * @param  BigInteger factor        [the first no given]
+     * @param  BigInteger number        [the second no given]
+     * @return            [boolean value of if factor is a factor of number]
+     */
     private static boolean isFactor(BigInteger factor, BigInteger number) {
-        return (number.mod(factor).toString().equals("0"));
-        //todo: redo this with BigDecimal to allow for higher no of terms (?)
+        return number.mod(factor).equals(ZERO);
     }
 
+    /**
+     * method to half a given BigDecimal (for user in isPrime: iterating over values up to half size).
+     * @param  BigInteger numIn         [the number to halve]
+     * @return            [the halved value of numIn]
+     */
     private static BigInteger half(BigInteger numIn) {
         if (isEven(numIn)) return numIn.divide(TWO);
         numIn = numIn.add(ONE);
@@ -191,7 +275,7 @@ public class PrimeNumbers {
     }
 
     /**
-     * this method is adapted from the Commifier class in my Fibonacci repo.
+     * this method is adapted from the Commifier class in my Fibonacci repo. Adds commas to a given number for readability.
      * @param numAsString the String value of the number coming in; probably will be a BigInteger with .toString() called on it
      * @return a String of the number in returned with commas
      */
